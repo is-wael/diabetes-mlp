@@ -1,0 +1,5 @@
+matplotlib==3.8.2        # For plotting and visualizations
+numpy==1.26.4            # Fundamental package for numerical computations
+pandas==2.2.2            # Data structures and data analysis tools
+scikit-learn==1.4.2      # Machine learning library
+seaborn==0.13.2          # Statistical data visualization
