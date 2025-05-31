@@ -47,7 +47,6 @@ missing_features = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI
 zero_counts = data[missing_features].eq(0).sum()
 zero_percent = (zero_counts / len(data)) * 100
 
-# On remet tout dans un DataFrame pour seaborn
 df_zero = zero_percent.reset_index()
 df_zero.columns = ['Feature', 'Zero Percent']
 
@@ -281,10 +280,7 @@ plt.grid(True, linestyle='--', alpha=0.6)
 plt.tight_layout()
 plt.show()
 
-"""2kp
 
-Class Imbalance
-"""
 
 import pandas as pd
 
