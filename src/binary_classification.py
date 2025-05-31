@@ -25,9 +25,6 @@ print(data.info())
 
 """ 2. Data Exploration (Histograms)"""
 
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 data.hist(bins=20, figsize=(15, 10))
 plt.suptitle('Feature Distributions')
 plt.tight_layout()
@@ -94,8 +91,6 @@ y = data['Outcome'].values.reshape(-1, 1)
 X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
 X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.25, stratify=y_temp, random_state=42)
 print(f"\nTrain: {X_train.shape}, Validation: {X_val.shape}, Test: {X_test.shape}")
-
-import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots(figsize=(6, 4))
 layer_sizes = [8, 16, 8, 1]
@@ -292,10 +287,6 @@ plt.show()
 
 """Test Set Performance"""
 
-from sklearn.metrics import classification_report, confusion_matrix
-import seaborn as sns
-import matplotlib.pyplot as plt
-
 y_test_pred = nn.predict(X_test)
 
 report = classification_report(y_test, y_test_pred, target_names=['Non-diabetic', 'Diabetic'])
@@ -313,8 +304,6 @@ plt.show()
 
 """Loss curve"""
 
-import matplotlib.pyplot as plt
-
 plt.figure(figsize=(10, 5))
 plt.plot(train_losses, label='Train Loss', color='blue')
 plt.plot(val_losses, label='Validation Loss', color='orange')
@@ -326,12 +315,7 @@ plt.grid(True, linestyle='--', alpha=0.6)
 plt.tight_layout()
 plt.show()
 
-"""2kp
-
-Class Imbalance
-"""
-
-import pandas as pd
+"""Class Imbalance"""
 
 class_counts = data['Outcome'].value_counts()
 total = class_counts.sum()
@@ -386,8 +370,6 @@ train_losses_l2, val_losses_l2, train_accuracies_l2, val_accuracies_l2 = nn_l2.t
     X_train, y_train, X_val, y_val, epochs=100, batch_size=32
 )
 
-import matplotlib.pyplot as plt
-
 l2_lambdas = [0.0, 0.01, 0.1, 1.0]
 val_losses_dict = {}
 
@@ -414,8 +396,6 @@ plt.tight_layout()
 plt.show()
 
 """Alternative Architectures"""
-
-import matplotlib.pyplot as plt
 
 architectures = [
     [8, 8, 1],
