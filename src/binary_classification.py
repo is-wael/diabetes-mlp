@@ -95,6 +95,21 @@ X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=0.2, stratify=
 X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.25, stratify=y_temp, random_state=42)
 print(f"\nTrain: {X_train.shape}, Validation: {X_val.shape}, Test: {X_test.shape}")
 
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(6, 4))
+layer_sizes = [8, 16, 8, 1]
+layer_names = ['Input', 'Hidden 1', 'Hidden 2', 'Output']
+
+for i, (size, name) in enumerate(zip(layer_sizes, layer_names)):
+    ax.scatter([i]*size, range(size), s=200, label=f'{name} ({size})')
+ax.set_xticks(range(len(layer_sizes)))
+ax.set_xticklabels(layer_names)
+ax.set_yticks([])
+ax.set_title('Neural Network Architecture')
+ax.legend()
+plt.show()
+
 """8. Neural Network Architecture (MLP) & ADAM"""
 
 def relu(x):
@@ -109,6 +124,37 @@ def sigmoid(x):
 def sigmoid_derivative(x):
     s = sigmoid(x)
     return s * (1 - s)
+
+class AdamOptimizer:
+    def __init__(self, layer_sizes, learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-8):
+        self.learning_rate = learning_rate
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.epsilon = epsilon
+        self.m_w = [np.zeros((layer_sizes[i], layer_sizes[i+1])) for i in range(len(layer_sizes)-1)]
+        self.v_w = [np.zeros((layer_sizes[i], layer_sizes[i+1])) for i in range(len(layer_sizes)-1)]
+        self.m_b = [np.zeros((1, layer_sizes[i+1])) for i in range(len(layer_sizes)-1)]
+        self.v_b = [np.zeros((1, layer_sizes[i+1])) for i in range(len(layer_sizes)-1)]
+        self.t = 0
+
+    def update(self, weights, biases, grads_w, grads_b):
+        self.t += 1
+        new_weights = []
+        new_biases = []
+        for i in range(len(weights)):
+            self.m_w[i] = self.beta1 * self.m_w[i] + (1 - self.beta1) * grads_w[i]
+            self.v_w[i] = self.beta2 * self.v_w[i] + (1 - self.beta2) * (grads_w[i] ** 2)
+            m_w_hat = self.m_w[i] / (1 - self.beta1 ** self.t)
+            v_w_hat = self.v_w[i] / (1 - self.beta2 ** self.t)
+            w_update = self.learning_rate * m_w_hat / (np.sqrt(v_w_hat) + self.epsilon)
+            new_weights.append(weights[i] - w_update)
+            self.m_b[i] = self.beta1 * self.m_b[i] + (1 - self.beta1) * grads_b[i]
+            self.v_b[i] = self.beta2 * self.v_b[i] + (1 - self.beta2) * (grads_b[i] ** 2)
+            m_b_hat = self.m_b[i] / (1 - self.beta1 ** self.t)
+            v_b_hat = self.v_b[i] / (1 - self.beta2 ** self.t)
+            b_update = self.learning_rate * m_b_hat / (np.sqrt(v_b_hat) + self.epsilon)
+            new_biases.append(biases[i] - b_update)
+        return new_weights, new_biases
 
 class NeuralNetwork:
     def __init__(self, layer_sizes, learning_rate=0.01, optimizer=None, l2_lambda=0.0):
@@ -280,7 +326,10 @@ plt.grid(True, linestyle='--', alpha=0.6)
 plt.tight_layout()
 plt.show()
 
+"""2kp
 
+Class Imbalance
+"""
 
 import pandas as pd
 
